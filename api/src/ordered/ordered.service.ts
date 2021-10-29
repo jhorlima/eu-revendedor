@@ -1,11 +1,20 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+
+import { OrderedDocument } from './entities/ordered.entity';
 import { CreateOrderedDto } from './dto/create-ordered.dto';
 import { UpdateOrderedDto } from './dto/update-ordered.dto';
 
 @Injectable()
 export class OrderedService {
-  create(createOrderedDto: CreateOrderedDto) {
-    return 'This action adds a new ordered';
+  @InjectModel(OrderedDocument.name)
+  readonly retailerModel: Model<OrderedDocument>;
+
+  async create(createOrderedDto: CreateOrderedDto) {
+    await new this.retailerModel({
+      ...createOrderedDto,
+    }).save();
   }
 
   findAll() {

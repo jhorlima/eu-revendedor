@@ -1,11 +1,11 @@
 import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
   Length,
   Matches,
-  MaxLength,
+  IsEmail,
+  IsString,
   Validate,
+  IsNotEmpty,
+  MaxLength,
 } from 'class-validator';
 
 import { Retailer } from '../entities/retailer.entity';

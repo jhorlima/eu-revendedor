@@ -1,12 +1,13 @@
 import {
-  Body,
-  Controller,
   Get,
   Post,
-  UseGuards,
+  Body,
   UsePipes,
+  UseGuards,
+  Controller,
   ValidationPipe,
 } from '@nestjs/common';
+
 import { RetailerService } from './retailer.service';
 import { CreateRetailerDto } from './dto/create-retailer.dto';
 

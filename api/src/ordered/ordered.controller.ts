@@ -1,26 +1,37 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
+  UsePipes,
+  UseGuards,
+  Controller,
+  ValidationPipe,
 } from '@nestjs/common';
+
 import { OrderedService } from './ordered.service';
 import { CreateOrderedDto } from './dto/create-ordered.dto';
-import { UpdateOrderedDto } from './dto/update-ordered.dto';
+
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('ordered')
 export class OrderedController {
   constructor(private readonly orderedService: OrderedService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  )
   create(@Body() createOrderedDto: CreateOrderedDto) {
     return this.orderedService.create(createOrderedDto);
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.orderedService.findAll();
   }
@@ -28,15 +39,5 @@ export class OrderedController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.orderedService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderedDto: UpdateOrderedDto) {
-    return this.orderedService.update(+id, updateOrderedDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderedService.remove(+id);
   }
 }

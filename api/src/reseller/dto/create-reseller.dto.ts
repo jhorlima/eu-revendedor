@@ -4,14 +4,13 @@ import {
   IsEmail,
   IsString,
   Validate,
-  IsNotEmpty,
   MaxLength,
+  IsNotEmpty,
 } from 'class-validator';
 
-import { Retailer } from '../entities/retailer.entity';
 import { CpfValidator } from '../../shared/cpf.validator';
 
-export class CreateRetailerDto implements Retailer {
+export class CreateResellerDto {
   @IsString()
   @IsEmail()
   email: string;

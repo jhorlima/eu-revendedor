@@ -1,29 +1,34 @@
-import { Ordered } from '../entities/ordered.entity';
 import {
   Min,
   IsDate,
-  MaxDate,
+  Matches,
   IsString,
-  IsDecimal,
+  Validate,
+  IsNumber,
   IsBoolean,
   IsNotEmpty,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CpfValidator } from '../../shared/cpf.validator';
 
-export class CreateOrderedDto
-  implements Pick<Ordered, 'code' | 'value' | 'date' | 'usedCashback'>
-{
+export class CreateOrderedDto {
   @IsString()
   @IsNotEmpty()
   code: string;
 
   @IsDate()
-  @MaxDate(new Date())
+  @Type(() => Date)
   date: Date;
 
   @IsBoolean()
   usedCashback: boolean;
 
-  @IsDecimal()
+  @IsNumber()
   @Min(0)
   value: number;
+
+  @IsString()
+  @Matches(/^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/)
+  @Validate(CpfValidator)
+  resellerNin: string;
 }

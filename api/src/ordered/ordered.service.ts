@@ -1,19 +1,35 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
-import { OrderedDocument } from './entities/ordered.entity';
 import { CreateOrderedDto } from './dto/create-ordered.dto';
 import { UpdateOrderedDto } from './dto/update-ordered.dto';
+import { OrderedDocument, OrderedStatus } from './entities/ordered.entity';
+
+import { ResellerService } from '../reseller/reseller.service';
 
 @Injectable()
 export class OrderedService {
   @InjectModel(OrderedDocument.name)
-  readonly retailerModel: Model<OrderedDocument>;
+  readonly orderedModel: Model<OrderedDocument>;
+
+  @Inject()
+  readonly resellerService: ResellerService;
 
   async create(createOrderedDto: CreateOrderedDto) {
-    await new this.retailerModel({
+    const reseller = await this.resellerService.findOne(
+      createOrderedDto.resellerNin,
+    );
+
+    if (!reseller) {
+      throw new NotFoundException('Revendedor não encontrado!');
+    }
+
+    await new this.orderedModel({
       ...createOrderedDto,
+      status: OrderedStatus.in_validation,
+      cashback: 0.2, // TODO: Apagar
+      reseller,
     }).save();
   }
 

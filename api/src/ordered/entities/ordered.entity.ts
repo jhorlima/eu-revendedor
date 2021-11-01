@@ -1,10 +1,10 @@
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { ModelDefinition, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import {
-  Retailer,
-  RetailerDocument,
-} from '../../retailer/entities/retailer.entity';
+  Reseller,
+  ResellerDocument,
+} from '../../reseller/entities/reseller.entity';
 
 export enum OrderedStatus {
   approved = 'Aprovado',
@@ -18,9 +18,13 @@ export interface Ordered {
   cashback: number;
   usedCashback: boolean;
   status: OrderedStatus;
-  retailer: Retailer;
+  reseller: Reseller;
 }
 
+@Schema({
+  timestamps: true,
+  collection: 'ordereds',
+})
 export class OrderedDocument extends Document implements Ordered {
   @Prop({ required: true })
   code: string;
@@ -31,7 +35,7 @@ export class OrderedDocument extends Document implements Ordered {
   @Prop({ required: true })
   value: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, min: 0, max: 1 })
   cashback: number;
 
   @Prop({ required: true })
@@ -42,10 +46,10 @@ export class OrderedDocument extends Document implements Ordered {
 
   @Prop({
     type: MongooseSchema.Types.ObjectId,
-    ref: RetailerDocument.name,
+    ref: ResellerDocument.name,
     required: true,
   })
-  retailer: Retailer;
+  reseller: Reseller;
 }
 
 export const OrderedSchema = SchemaFactory.createForClass(OrderedDocument);

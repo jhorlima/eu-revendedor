@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export interface Retailer {
+export interface Reseller {
   nin: string;
   fullName: string;
   email: string;
@@ -10,9 +10,9 @@ export interface Retailer {
 
 @Schema({
   timestamps: true,
-  collection: 'retailers',
+  collection: 'resellers',
 })
-export class RetailerDocument extends Document implements Retailer {
+export class ResellerDocument extends Document implements Reseller {
   @Prop({ required: true, unique: true })
   nin: string;
 
@@ -24,11 +24,14 @@ export class RetailerDocument extends Document implements Retailer {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop()
+  salesPerMonth?: Map<string, number>;
 }
 
-export const RetailerSchema = SchemaFactory.createForClass(RetailerDocument);
+export const ResellerSchema = SchemaFactory.createForClass(ResellerDocument);
 
-export const RetailerModel = <ModelDefinition>{
-  name: RetailerDocument.name,
-  schema: RetailerSchema,
+export const ResellerModel = <ModelDefinition>{
+  name: ResellerDocument.name,
+  schema: ResellerSchema,
 };

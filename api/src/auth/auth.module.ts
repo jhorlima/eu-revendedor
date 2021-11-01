@@ -7,12 +7,12 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 
 import { BcryptModule } from '../bcrypt/bcrypt.module';
-import { RetailerModule } from '../retailer/retailer.module';
+import { ResellerModule } from '../reseller/reseller.module';
 
 @Module({
   imports: [
     BcryptModule,
-    RetailerModule,
+    ResellerModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,

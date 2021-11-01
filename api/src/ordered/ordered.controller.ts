@@ -19,7 +19,6 @@ export class OrderedController {
   constructor(private readonly orderedService: OrderedService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @UsePipes(
     new ValidationPipe({
       transform: true,

@@ -2,8 +2,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { BcryptService } from '../bcrypt/bcrypt.service';
-import { RetailerService } from '../retailer/retailer.service';
-import { Retailer } from '../retailer/entities/retailer.entity';
+import { ResellerService } from '../reseller/reseller.service';
+import { Reseller } from '../reseller/entities/reseller.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,31 +14,17 @@ export class AuthService {
   readonly bcryptService: BcryptService;
 
   @Inject()
-  readonly retailerService: RetailerService;
+  readonly resellerService: ResellerService;
 
-  async validateUser(
-    username: string,
-  ): Promise<Pick<Retailer, 'nin' | 'fullName' | 'email'> | null> {
-    const user = await this.retailerService.findOne(username);
-
-    if (user) {
-      return {
-        nin: user.nin,
-        email: user.email,
-        fullName: user.fullName,
-      };
-    }
-
-    return null;
+  async validateUser(username: string): Promise<Reseller | null> {
+    const user = await this.resellerService.findOne(username);
+    return user ? user.toObject() : null;
   }
 
   async login(username: string, password: string) {
-    const user = await this.retailerService.findOne(username);
+    const user = await this.resellerService.findOne(username);
 
-    if (
-      !user ||
-      !(await this.bcryptService.comparePassword(password, user.password))
-    ) {
+    if (!(await this.bcryptService.comparePassword(password, user?.password))) {
       throw new UnauthorizedException();
     }
 

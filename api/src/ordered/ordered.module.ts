@@ -5,8 +5,10 @@ import { OrderedService } from './ordered.service';
 import { OrderedController } from './ordered.controller';
 import { OrderedModel } from './entities/ordered.entity';
 
+import { ResellerModule } from '../reseller/reseller.module';
+
 @Module({
-  imports: [MongooseModule.forFeature([OrderedModel])],
+  imports: [ResellerModule, MongooseModule.forFeature([OrderedModel])],
   controllers: [OrderedController],
   providers: [OrderedService],
 })

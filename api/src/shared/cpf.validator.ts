@@ -1,13 +1,17 @@
 import {
-  ValidationArguments,
   ValidatorConstraint,
+  ValidationArguments,
   ValidatorConstraintInterface,
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'cpfValidator', async: false })
 export class CpfValidator implements ValidatorConstraintInterface {
-  validate(cpf: string, args: ValidationArguments) {
-    cpf = args.value.replace(/[^\d]+/g, '');
+  validate(cpf: string | undefined, _args: ValidationArguments) {
+    if (!cpf) {
+      return false;
+    }
+
+    cpf = cpf.replace(/[^\d]+/g, '');
 
     if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) {
       return false;
@@ -30,7 +34,7 @@ export class CpfValidator implements ValidatorConstraintInterface {
     return !(rest(10, 2) !== validator[0] || rest(11, 1) !== validator[1]);
   }
 
-  defaultMessage(args: ValidationArguments) {
-    return 'CPF: $value is invalid!';
+  defaultMessage(_args: ValidationArguments) {
+    return 'cpf is invalid!';
   }
 }

@@ -50,17 +50,13 @@ export class OrderService {
         value: createOrderDto.value,
         status: OrderStatus.in_validation,
       }).save();
-
-      this.logger.log(
-        `Pedido registrado! Código: "${createOrderDto.code}" | Revendedor: "${createOrderDto.resellerNin}"."`,
-      );
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
       }
 
       this.logger.error(
-        `Ocorreu um erro ao registrar o pedido! Código: "${createOrderDto.code}" | Revendedor: "${createOrderDto.resellerNin}"."`,
+        `Ocorreu um erro ao registrar o pedido! Código: "${createOrderDto.code}" | Revendedor: "${createOrderDto.resellerNin}".`,
         error,
       );
       throw new InternalServerErrorException(error);
@@ -70,6 +66,7 @@ export class OrderService {
   async findAll(resellerNin: string) {
     try {
       this.logger.log(`Obtendo pedidos. Revendedor: "${resellerNin}".`);
+
       const orders = await this.orderModel.find().sort({ date: -1 }).exec();
       const purchasesPerMonth = orders.reduce((acc, order) => {
         const monthKey = formatDate(order.date, 'yyyy-MM');
@@ -87,12 +84,13 @@ export class OrderService {
           value: order.value,
           date: order.date,
           code: order.code,
+          status: order.status,
           ...this.cashbackRules(order, purchasesPerMonth[monthKey]),
         };
       });
     } catch (error) {
       this.logger.error(
-        `Ocorreu um erro ao obter pedidos! Revendedor: "${resellerNin}"."`,
+        `Ocorreu um erro ao obter pedidos! Revendedor: "${resellerNin}".`,
         error,
       );
       throw new InternalServerErrorException(error);

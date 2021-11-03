@@ -22,9 +22,13 @@ export class AuthService {
   }
 
   async login(username: string, password: string) {
-    const user = await this.resellerService.findOne(username);
+    const user = await this.resellerService
+      .findResellerWithPassword(username)
+      .catch(() => {
+        throw new UnauthorizedException();
+      });
 
-    if (!(await this.bcryptService.comparePassword(password, user?.password))) {
+    if (!(await this.bcryptService.comparePassword(password, user.password))) {
       throw new UnauthorizedException();
     }
 

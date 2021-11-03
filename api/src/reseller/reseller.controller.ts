@@ -22,7 +22,7 @@ export class ResellerController {
     }),
   )
   @ApiCreatedResponse({ description: 'Revendedor registrado.' })
-  @ApiConflictResponse({ description: 'C.P.F. já cadastrado.' })
+  @ApiConflictResponse({ description: 'CPF ou E-mail já cadastrado.' })
   create(@Body() createResellerDto: CreateResellerDto) {
     return this.resellerService.create(createResellerDto);
   }

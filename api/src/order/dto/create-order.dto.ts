@@ -15,17 +15,17 @@ import { CpfValidator } from '../../shared/cpf.validator';
 export class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ example: 'SKU12345678' })
   code: string;
 
   @IsDate()
   @Type(() => Date)
-  @ApiProperty()
+  @ApiProperty({ example: new Date() })
   date: Date;
 
   @IsNumber()
   @Min(0)
-  @ApiProperty()
+  @ApiProperty({ example: 345.67 })
   value: number;
 
   @IsString()
@@ -33,6 +33,7 @@ export class CreateOrderDto {
   @Validate(CpfValidator)
   @ApiProperty({
     pattern: '^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$',
+    example: '153.509.460-56',
   })
   resellerNin: string;
 }

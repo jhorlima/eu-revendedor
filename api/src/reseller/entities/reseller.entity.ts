@@ -24,9 +24,6 @@ export class ResellerDocument extends Document implements Reseller {
 
   @Prop({ required: true })
   password: string;
-
-  @Prop()
-  salesPerMonth?: Map<string, number>;
 }
 
 export const ResellerSchema = SchemaFactory.createForClass(ResellerDocument);

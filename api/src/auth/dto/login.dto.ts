@@ -9,6 +9,7 @@ export class LoginDto {
   @Validate(CpfValidator)
   @ApiProperty({
     pattern: '^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$',
+    example: '153.509.460-56',
   })
   nin: string;
 
@@ -17,6 +18,7 @@ export class LoginDto {
   @ApiProperty({
     minLength: 6,
     maxLength: 14,
+    example: '123456',
   })
   password: string;
 }

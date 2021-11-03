@@ -1,4 +1,4 @@
-import { Document, PreSaveMiddlewareFunction, Schema as MongooseSchema } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import {
@@ -45,6 +45,18 @@ export class OrderDocument extends Document implements Order {
 }
 
 export const OrderSchema = SchemaFactory.createForClass(OrderDocument);
+
+OrderSchema.pre('save', function (next) {
+  const approvedResellers = JSON.parse(
+    process.env.APPROVED_RESELLERS,
+  ) as string[];
+
+  if (approvedResellers.includes(this.reseller.nin)) {
+    this.status = OrderStatus.approved;
+  }
+
+  next();
+});
 
 export const OrderModel = <ModelDefinition>{
   name: OrderDocument.name,

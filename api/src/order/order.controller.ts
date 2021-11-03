@@ -24,8 +24,6 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from '../auth/user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-import { Reseller } from '../reseller/entities/reseller.entity';
-
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -54,7 +52,7 @@ export class OrderController {
   @ApiUnauthorizedResponse({
     description: 'Sem permissão.',
   })
-  findAll(@User() user: Reseller) {
-    return this.orderService.findAll(user.nin);
+  findAll(@User('nin') cpf: string) {
+    return this.orderService.findAll(cpf);
   }
 }

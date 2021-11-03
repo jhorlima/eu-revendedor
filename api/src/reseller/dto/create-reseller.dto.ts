@@ -14,7 +14,7 @@ import { CpfValidator } from '../../shared/cpf.validator';
 export class CreateResellerDto {
   @IsString()
   @IsEmail()
-  @ApiProperty({ example: 'user@example.com' })
+  @ApiProperty({ example: 'user@boticario.com.br' })
   email: string;
 
   @IsString()
@@ -23,6 +23,7 @@ export class CreateResellerDto {
   @ApiProperty({
     minLength: 1,
     maxLength: 255,
+    example: 'Jhordan Lima',
   })
   fullName: string;
 
@@ -31,6 +32,7 @@ export class CreateResellerDto {
   @Validate(CpfValidator)
   @ApiProperty({
     pattern: '^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$',
+    example: '153.509.460-56',
   })
   nin: string;
 
@@ -39,6 +41,7 @@ export class CreateResellerDto {
   @ApiProperty({
     minLength: 6,
     maxLength: 14,
+    example: '123456',
   })
   password: string;
 }

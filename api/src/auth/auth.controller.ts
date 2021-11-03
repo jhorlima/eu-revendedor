@@ -6,12 +6,18 @@ import {
   Controller,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 import { JwtDto } from './dto/jwt.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   @Inject()
@@ -24,6 +30,9 @@ export class AuthController {
       whitelist: true,
     }),
   )
+  @ApiOperation({
+    summary: 'Rota para validar um login de um revendedor(a)',
+  })
   @ApiOkResponse({
     description: 'Autenticação permitida.',
     type: JwtDto,

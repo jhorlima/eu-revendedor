@@ -1,4 +1,6 @@
 import {
+  ApiTags,
+  ApiOperation,
   ApiBearerAuth,
   ApiOkResponse,
   ApiBadRequestResponse,
@@ -15,6 +17,7 @@ import {
 import { User } from '../auth/user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@ApiTags('cashback')
 @Controller('cashback')
 export class CashbackController {
   @Inject()
@@ -22,6 +25,12 @@ export class CashbackController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary:
+      'Rota para exibir o acumulado de cashback até o momento, essa rota ' +
+      'irá consumir essa informação de uma API externa disponibilizada ' +
+      'pelo Boticário.',
+  })
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Acumulado de cashback até o momento',

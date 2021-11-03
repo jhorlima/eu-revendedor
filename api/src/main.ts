@@ -10,9 +10,15 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('EU Revendedor')
-    .setDescription('Descrição da API "Eu Revendedor"')
+    .setDescription(
+      'A oportunidade proposta é criar um sistema de Cashback, onde o valor será disponibilizado como crédito para a próxima compra da revendedora no Boticário;',
+    )
     .setVersion('1.0')
-    .addTag('eu-revendedor')
+    .addTag('default')
+    .addTag('reseller')
+    .addTag('order')
+    .addTag('auth')
+    .addTag('cashback')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

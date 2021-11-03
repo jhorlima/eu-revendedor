@@ -28,6 +28,9 @@ export class CashbackService {
           params: {
             cpf: nin.replace(/[^\d]+/g, ''),
           },
+          headers: {
+            token: process.env.EXTERNAL_API_TOKEN,
+          },
         }),
       );
 

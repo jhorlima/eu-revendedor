@@ -6,7 +6,9 @@ import {
   Controller,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
+import { JwtDto } from './dto/jwt.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 
@@ -22,6 +24,13 @@ export class AuthController {
       whitelist: true,
     }),
   )
+  @ApiOkResponse({
+    description: 'Autenticação permitida.',
+    type: JwtDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Sem permissão.',
+  })
   login(@Body() login: LoginDto) {
     return this.authService.login(login.nin, login.password);
   }

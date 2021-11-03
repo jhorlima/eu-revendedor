@@ -30,10 +30,6 @@ export class ResellerService {
     }).save();
   }
 
-  findAll() {
-    return this.resellerModel.find().select('-password').exec();
-  }
-
   findOne(username: string) {
     return this.resellerModel
       .findOne({

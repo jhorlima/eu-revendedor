@@ -5,30 +5,34 @@ import {
   IsString,
   Validate,
   IsNumber,
-  IsBoolean,
   IsNotEmpty,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+
 import { CpfValidator } from '../../shared/cpf.validator';
 
-export class CreateOrderedDto {
+export class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   code: string;
 
   @IsDate()
   @Type(() => Date)
+  @ApiProperty()
   date: Date;
-
-  @IsBoolean()
-  usedCashback: boolean;
 
   @IsNumber()
   @Min(0)
+  @ApiProperty()
   value: number;
 
   @IsString()
   @Matches(/^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/)
   @Validate(CpfValidator)
+  @ApiProperty({
+    pattern: '^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$',
+  })
   resellerNin: string;
 }

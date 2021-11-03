@@ -1,17 +1,14 @@
 import {
-  Get,
   Post,
   Body,
   UsePipes,
-  UseGuards,
   Controller,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiConflictResponse, ApiCreatedResponse } from '@nestjs/swagger';
 
 import { ResellerService } from './reseller.service';
 import { CreateResellerDto } from './dto/create-reseller.dto';
-
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('reseller')
 export class ResellerController {
@@ -24,13 +21,9 @@ export class ResellerController {
       whitelist: true,
     }),
   )
+  @ApiCreatedResponse({ description: 'Revendedor registrado.' })
+  @ApiConflictResponse({ description: 'C.P.F. já cadastrado.' })
   create(@Body() createResellerDto: CreateResellerDto) {
     return this.resellerService.create(createResellerDto);
-  }
-
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.resellerService.findAll();
   }
 }
